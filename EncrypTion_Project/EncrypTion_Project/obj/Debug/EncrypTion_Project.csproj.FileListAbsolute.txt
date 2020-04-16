@@ -3,3 +3,8 @@ C:\Users\Nigel Isom\source\repos\EncrypTion_Project\EncrypTion_Project\bin\Debug
 C:\Users\Nigel Isom\source\repos\EncrypTion_Project\EncrypTion_Project\obj\Debug\EncrypTion_Project.csprojAssemblyReference.cache
 C:\Users\Nigel Isom\source\repos\EncrypTion_Project\EncrypTion_Project\obj\Debug\EncrypTion_Project.exe
 C:\Users\Nigel Isom\source\repos\EncrypTion_Project\EncrypTion_Project\obj\Debug\EncrypTion_Project.pdb
+C:\Users\Nigel Isom\Documents\GitHub\Interlaced_Spiral_Cipher_Project\EncrypTion_Project\EncrypTion_Project\obj\Debug\EncrypTion_Project.csprojAssemblyReference.cache
+C:\Users\Nigel Isom\Documents\GitHub\Interlaced_Spiral_Cipher_Project\EncrypTion_Project\EncrypTion_Project\obj\Debug\EncrypTion_Project.exe
+C:\Users\Nigel Isom\Documents\GitHub\Interlaced_Spiral_Cipher_Project\EncrypTion_Project\EncrypTion_Project\obj\Debug\EncrypTion_Project.pdb
+C:\Users\Nigel Isom\Documents\GitHub\Interlaced_Spiral_Cipher_Project\EncrypTion_Project\EncrypTion_Project\bin\Debug\EncrypTion_Project.exe
+C:\Users\Nigel Isom\Documents\GitHub\Interlaced_Spiral_Cipher_Project\EncrypTion_Project\EncrypTion_Project\bin\Debug\EncrypTion_Project.pdb

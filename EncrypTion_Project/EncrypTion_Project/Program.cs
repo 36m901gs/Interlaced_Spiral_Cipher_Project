@@ -13,14 +13,15 @@ namespace EncrypTion_Project
             int rim_modifier = ((square_size) - 1);
             int inc_modifier = ((square_size - 1));
             int block_init = 1;
-            bool full_block = true;
+            int rim = ((4 * (square_size))-4);
+            
 
 
             List<int> encode_map = new List<int>();
 
-            while (full_block) { //this is the final section!!modify this to not rely on four block intervals? or switch if it wont be a full block?
+            while  (rim >= 4) { 
 
-                for (int i = block_init; i <= rim_modifier /*?*/; i++) //I think instead of using square_size, that should be a variable that I change over time. Keep everything else the same
+                for (int i = block_init; i <= rim_modifier /*?*/; i++) 
                 {
                     encode_map.Add(i);
 
@@ -32,29 +33,17 @@ namespace EncrypTion_Project
 
                 }
 
-                inc_modifier = inc_modifier - 2;
-                block_init = encode_map[encode_map.Count-1];
-                rim_modifier = block_init+inc_modifier;
+                inc_modifier -= 2;
+                block_init = (encode_map[encode_map.Count-1])+1;
+                rim_modifier = (block_init+inc_modifier);
+                rim -= 8;
 
-                if () //will determine if its a full block here
-                {
-                    full_block = false;
-                }
-
-                //rim_modifier = next "max" rim initiliazer, which means i = 1, needs to be changed to i =min_rim
-                // the bottom row needs to be changed to be the difference between them?
+             
 
 
             }
 
-            if () //values arent equal means its odd, calculate final value - just subtract summation value from current sum and add it to the list?
-            {
-
-            }
-
-
-
-
+           
             return encode_map;
         }
     }
