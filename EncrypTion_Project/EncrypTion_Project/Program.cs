@@ -27,23 +27,23 @@ namespace EncrypTion_Project
 
                     for (int j = 1; j <= 3; j++)
                     {
-                        encode_map.Add(i + (j * (inc_modifier))); /*?*/
+                        encode_map.Add(i + (j * (inc_modifier))); /*set a breakpoint when the value added is 40 then step through*/
                     }
-
 
                 }
 
                 inc_modifier -= 2;
                 block_init = (encode_map[encode_map.Count-1])+1;
-                rim_modifier = (block_init+inc_modifier);
+                rim_modifier = ((block_init+inc_modifier)-1);
                 rim -= 8;
-
-             
-
 
             }
 
-           
+            if(square_size % 2 != 0)
+            {
+                encode_map.Add(rim_modifier + 1);
+            }
+       
             return encode_map;
         }
     }
