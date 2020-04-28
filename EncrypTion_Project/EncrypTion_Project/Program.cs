@@ -7,11 +7,16 @@ namespace EncrypTion_Project
 {
     class Encoder
     {
-        public List<char> encode_string(string message)
+
+        //almost there - still needs some tweaking. Slightly misunderstood the problem. I need to combine 
+        //ROWS, not just add the corners sequentially.
+        public string encode_string(string message)
         {
             List<int> path = new List<int>();
+            List<char> enc_mess = new List<char>();
             string encoded_message;
             double square_size = 0;
+            int msg_index = 0;
 
             if(message.Length % 2 != 0)
             {   
@@ -26,16 +31,22 @@ namespace EncrypTion_Project
 
             path = encoder((int)square_size);
 
-            //1. get the size of the square we'll need --done
+            
+            for(int j = 0; j < (path.Count-1); j++)
+            {
+                if ((path[j]-1) > (message.Length-1))
+                {
+                    enc_mess.Insert(j, ' '); // put a space at that point
+                }
+                else
+                {
+                    enc_mess.Insert(j, message[(path[j]-1)]);//put character message[j] in that space
+                }
+            }
 
-
-            //2. calculate the encode path -- done
-
-
-            //3. put the strings into the List
-
-            //4. return it as a string
-
+            
+            
+            encoded_message = String.Join("", enc_mess);
             return encoded_message;
         }
 
@@ -84,12 +95,10 @@ namespace EncrypTion_Project
         static void Main(string[] args)
         {
             Encoder encoder_steve = new Encoder();
-            List<int> answer = encoder_steve.encoder(7);
-            foreach(int val in answer)
-            {
-                Console.WriteLine(val);
-                Console.ReadLine();
-            }                     
+            string message = "Romani_ite_domum";
+            string encoded_message = encoder_steve.encode_string(message);
+            Console.WriteLine(encoded_message);
+            Console.ReadLine();
         }
     }
 }
