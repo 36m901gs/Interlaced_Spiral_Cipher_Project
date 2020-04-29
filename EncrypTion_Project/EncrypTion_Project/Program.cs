@@ -9,7 +9,11 @@ namespace EncrypTion_Project
     {
 
         //almost there - still needs some tweaking. Slightly misunderstood the problem. I need to combine 
-        //ROWS, not just add the corners sequentially.
+        //ROWS, not just add the corners sequentially.Think about tomororw - use indices of path, rather than the actual
+        //value? As in, the 5th index of the path has the value "2". So put the 5th value in the message, and put it 
+        // in space 2 when you encode it. SO i think the origal message index coincides with encoded path index - so you need to piece
+        // together the encoded message by finding "1,2,3,4"...in the encoded_path, and when you find it, use that index to select the 
+        // character from the original message. if It doesnt exist, put a space there
         public string encode_string(string message)
         {
             List<int> path = new List<int>();
@@ -31,16 +35,16 @@ namespace EncrypTion_Project
 
             path = encoder((int)square_size);
 
-            
+            //this is all incorrect - need to figure out what I would need to do to combine row by row
             for(int j = 0; j < (path.Count-1); j++)
             {
-                if ((path[j]-1) > (message.Length-1))
+                if (path.IndexOf(j+1) > (message.Length-1)) /*change this to get index of the value location of j, since youre getting index on need to subtract by 1*/
                 {
                     enc_mess.Insert(j, ' '); // put a space at that point
                 }
                 else
                 {
-                    enc_mess.Insert(j, message[(path[j]-1)]);//put character message[j] in that space
+                    enc_mess.Insert(j, message[path.IndexOf(j+1)]);//change this to get the index of the value location of j
                 }
             }
 
