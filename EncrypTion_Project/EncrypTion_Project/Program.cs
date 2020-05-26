@@ -8,12 +8,98 @@ namespace EncrypTion_Project
     class Encoder
     {
 
-        //almost there - still needs some tweaking. Slightly misunderstood the problem. I need to combine 
-        //ROWS, not just add the corners sequentially.Think about tomororw - use indices of path, rather than the actual
-        //value? As in, the 5th index of the path has the value "2". So put the 5th value in the message, and put it 
-        // in space 2 when you encode it. SO i think the origal message index coincides with encoded path index - so you need to piece
-        // together the encoded message by finding "1,2,3,4"...in the encoded_path, and when you find it, use that index to select the 
-        // character from the original message. if It doesnt exist, put a space there
+        public Dictionary<int, int> square_coord_gen(int square_size)
+        {
+            //I can store these values as ID's
+            Dictionary<int, int> square_coordinate = new Dictionary<int, int>();
+            int square_value = 1;
+            int square_corx = 1;
+            int square_cory = 1;
+            int edge = ((square_size - 1) * 4);
+            //currently bruteforcing - make this more elegant after you find a solution, think I can do away with these ni the looping phase
+            int max_x = square_size;
+            int max_y = square_size;
+            int min_x = 1;
+            int min_y = 1;
+            int key = 1;
+
+            //troubleshooting variables
+            int trg = 0;
+
+                while (square_value <= edge && square_value!=(square_size*square_size))
+                {
+                //generate and store coordinates
+                while (square_corx < max_x)   //x coordinates
+                {
+                    //add stuff to the list
+                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    square_coordinate.Add(square_value, key);
+
+                    //prep next rotation
+                    square_value++;
+                    square_corx++;
+
+                }
+                while (square_cory < max_y)
+                {
+                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    square_coordinate.Add(square_value, key);
+
+                    //prep next rotation
+                    square_value++;
+                    square_cory++;
+
+                }
+                while (square_corx > min_x)
+                {
+                    //add stuff to the list
+                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    square_coordinate.Add(square_value, key);
+
+                    //prep next rotation
+                    square_value++;
+                    square_corx--;
+
+                }
+
+                while (square_cory > (min_y+1))
+                {
+                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    square_coordinate.Add(square_value, key);
+
+                    //prep next rotation
+                    square_value++;
+                    square_cory--;
+
+                }
+
+                    //update values for next set of edges and min/maxes
+                    
+
+
+                
+                edge += (edge - 8);
+                min_x++;
+                max_x--;
+                min_y++;
+                max_y--;
+                trg++;
+                }
+
+
+
+
+
+
+
+            
+            return square_coordinate;
+
+
+
+
+        }
+
         public string encode_string(string message)
         {
             List<int> path = new List<int>();
@@ -35,7 +121,7 @@ namespace EncrypTion_Project
 
             path = encoder((int)square_size);
 
-            //this is all incorrect - need to figure out what I would need to do to combine row by row
+            //this is all incorrect - need to figure out what I would need to do to combine row by row (going to use coordinates instead!)
             for(int j = 0; j < (path.Count-1); j++)
             {
                 if (path.IndexOf(j+1) > (message.Length-1)) /*change this to get index of the value location of j, since youre getting index on need to subtract by 1*/
@@ -94,15 +180,35 @@ namespace EncrypTion_Project
             return encode_map;
         }
     }
+
     class Program
     {
         static void Main(string[] args)
         {
+            Dictionary<int, int> test_dict_cor = new Dictionary<int, int>();
             Encoder encoder_steve = new Encoder();
+
+            test_dict_cor = encoder_steve.square_coord_gen(10); // need to finish up the edge reformation of loop
+            foreach (KeyValuePair<int,int> entry in test_dict_cor)
+            {
+                Console.WriteLine(entry);
+                Console.ReadLine();
+            }
+
+
+
+
+
+            /* Answer Section
             string message = "Romani_ite_domum";
             string encoded_message = encoder_steve.encode_string(message);
             Console.WriteLine(encoded_message);
-            Console.ReadLine();
+            Console.ReadLine();  */
+
+
+
+
+            
         }
     }
 }
