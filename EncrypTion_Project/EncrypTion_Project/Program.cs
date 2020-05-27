@@ -26,9 +26,18 @@ namespace EncrypTion_Project
             //troubleshooting variables
             int trg = 0;
 
-                while (square_value <= edge && square_value!=(square_size*square_size))
+                while (square_value <= edge && square_value<=(square_size*square_size))
                 {
-                //generate and store coordinates
+                
+                /*Workaround to get final values - first block for 4x4 and up, why doesnt work for 2x2, 3x3? I dont think the value gets hit at the right point?*/
+                if (square_value == (square_size * square_size))
+                {
+                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    square_coordinate.Add(square_value, key);
+                    break;
+
+                } 
+
                 while (square_corx < max_x)   //x coordinates
                 {
                     //add stuff to the list
@@ -62,7 +71,7 @@ namespace EncrypTion_Project
 
                 }
 
-                while (square_cory > (min_y+1))
+                while (square_cory > (min_y+1)) 
                 {
                     key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
                     square_coordinate.Add(square_value, key);
@@ -73,11 +82,20 @@ namespace EncrypTion_Project
 
                 }
 
-                    //update values for next set of edges and min/maxes
-                    
+                //going to cheat here and add functionality for 2x2, 3x3 squares. Will fix later!
+                if (square_size==2 && square_value==4 || square_size == 3 && square_value == 9)
+                {
+                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    square_coordinate.Add(square_value, key);
 
-
+                }
                 
+
+                //update values for next set of edges and min/maxes
+
+
+
+
                 edge += (edge - 8);
                 min_x++;
                 max_x--;
@@ -188,7 +206,7 @@ namespace EncrypTion_Project
             Dictionary<int, int> test_dict_cor = new Dictionary<int, int>();
             Encoder encoder_steve = new Encoder();
 
-            test_dict_cor = encoder_steve.square_coord_gen(10); // need to finish up the edge reformation of loop
+            test_dict_cor = encoder_steve.square_coord_gen(6); // need to finish up the edge reformation of loop
             foreach (KeyValuePair<int,int> entry in test_dict_cor)
             {
                 Console.WriteLine(entry);
