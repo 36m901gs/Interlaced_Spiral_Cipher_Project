@@ -8,6 +8,53 @@ namespace EncrypTion_Project
     class Encoder
     {
 
+        public string encoded_message(Dictionary<int,int> square_cors, List<int> encode_path, int square_size,string message)
+        {
+            List<char> enc_message = new List<char>();
+            string final_message;
+            int cor_x = 0;
+            int cor_y = 0;
+
+            int value = 0;
+            int mssg_index = 0;
+
+            //write up to loop through coordinates by row - how do I pull coordinates? the double digit vals are 
+            //going to be the most difficult to pull. Where do they show up?  only in first loop, in squares size 10 or up
+
+          //  do square_coord_gen funtion again but row by row now,
+
+               while (cor_y <= square_size)
+            {
+                while (cor_x <= square_size)
+                {
+                    value = square_cors.TryGetValue(cor_x + cor_y); //get value based on key
+                    mssg_index = encode_path.GetIndexOf(value); //get index based on that value
+                    enc_message.Insert(mss_index, message[mssg_index]; //  SANITY CHECK HERE - DOES THIS MAKE SENSE?
+
+
+
+
+
+                }
+
+            }
+
+
+
+
+
+
+
+
+
+            return final_message;
+
+
+
+
+        }
+
+
         public Dictionary<int, int> square_coord_gen(int square_size)
         {
             //I can store these values as ID's
@@ -33,7 +80,7 @@ namespace EncrypTion_Project
                 if (square_value == (square_size * square_size))
                 {
                     key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
-                    square_coordinate.Add(square_value, key);
+                    square_coordinate.Add(key, square_value);
                     break;
 
                 } 
@@ -42,7 +89,7 @@ namespace EncrypTion_Project
                 {
                     //add stuff to the list
                     key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
-                    square_coordinate.Add(square_value, key);
+                    square_coordinate.Add(key, square_value);
 
                     //prep next rotation
                     square_value++;
@@ -52,7 +99,7 @@ namespace EncrypTion_Project
                 while (square_cory < max_y)
                 {
                     key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
-                    square_coordinate.Add(square_value, key);
+                    square_coordinate.Add(key, square_value);
 
                     //prep next rotation
                     square_value++;
@@ -63,7 +110,7 @@ namespace EncrypTion_Project
                 {
                     //add stuff to the list
                     key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
-                    square_coordinate.Add(square_value, key);
+                    square_coordinate.Add(key, square_value);
 
                     //prep next rotation
                     square_value++;
@@ -74,7 +121,7 @@ namespace EncrypTion_Project
                 while (square_cory > (min_y+1)) 
                 {
                     key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
-                    square_coordinate.Add(square_value, key);
+                    square_coordinate.Add(key, square_value);
 
                     //prep next rotation
                     square_value++;
@@ -86,7 +133,7 @@ namespace EncrypTion_Project
                 if (square_size==2 && square_value==4 || square_size == 3 && square_value == 9)
                 {
                     key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
-                    square_coordinate.Add(square_value, key);
+                    square_coordinate.Add(key, square_value);
 
                 }
                 
@@ -122,9 +169,10 @@ namespace EncrypTion_Project
         {
             List<int> path = new List<int>();
             List<char> enc_mess = new List<char>();
+            Dictionary<int, int> square_coords = new Dictionary<int, int>();
             string encoded_message;
             double square_size = 0;
-            int msg_index = 0;
+            int msg_index = 1;
 
             if(message.Length % 2 != 0)
             {   
@@ -138,19 +186,10 @@ namespace EncrypTion_Project
             }
 
             path = encoder((int)square_size);
+            square_coords = square_coord_gen((int)square_size);
 
-            //this is all incorrect - need to figure out what I would need to do to combine row by row (going to use coordinates instead!)
-            for(int j = 0; j < (path.Count-1); j++)
-            {
-                if (path.IndexOf(j+1) > (message.Length-1)) /*change this to get index of the value location of j, since youre getting index on need to subtract by 1*/
-                {
-                    enc_mess.Insert(j, ' '); // put a space at that point
-                }
-                else
-                {
-                    enc_mess.Insert(j, message[path.IndexOf(j+1)]);//change this to get the index of the value location of j
-                }
-            }
+            
+            
 
             
             
@@ -203,15 +242,14 @@ namespace EncrypTion_Project
     {
         static void Main(string[] args)
         {
-            Dictionary<int, int> test_dict_cor = new Dictionary<int, int>();
+            Dictionary<int, int> test_cor = new Dictionary<int, int>();
+            List<int> test_encode_path = new List<int>();
             Encoder encoder_steve = new Encoder();
 
-            test_dict_cor = encoder_steve.square_coord_gen(6); // need to finish up the edge reformation of loop
-            foreach (KeyValuePair<int,int> entry in test_dict_cor)
-            {
-                Console.WriteLine(entry);
-                Console.ReadLine();
-            }
+           // test_encode_path = encoder_steve.encoder(10);
+            test_cor = encoder_steve.square_coord_gen(10);
+            Console.WriteLine(test_encode_path);
+            Console.ReadLine();
 
 
 
