@@ -7,35 +7,64 @@ namespace EncrypTion_Project
 {
     class Encoder
     {
-
-        public string encoded_message(Dictionary<int,int> square_cors, List<int> encode_path, int square_size,string message)
+        public string decoder(string message)
         {
-            List<char> enc_message = new List<char>();
-            string final_message;
-            int cor_x = 0;
-            int cor_y = 0;
+            string decoded_message = "hush";
 
-            int value = 0;
-            int mssg_index = 0;
+            //process
+            // 1. get size of square based on encoded message size
+            // 2. I feel like if I can reverse that process I use below, I can do this fairly easily which means:
+            // 3. Use the encoded message to get the current index of the letter 
 
-            //write up to loop through coordinates by row - how do I pull coordinates? the double digit vals are 
-            //going to be the most difficult to pull. Where do they show up?  only in first loop, in squares size 10 or up
 
-          //  do square_coord_gen funtion again but row by row now,
 
-               while (cor_y <= square_size)
+
+            return decoded_message;
+
+        }
+
+
+        public string encoded_message(Dictionary<string, int> square_cors, List<int> encode_path, int square_size, string message)
+        {
+            List<char> enc_message = new List<char>(); //think I have to predetermine size of list to make this work
+           // char[] string_att_2 = new char[square_size * square_size];   
+            int cor_x = 1;
+            int cor_y = 1;
+            string key_gen;
+
+            int value;
+            int mssg_index;
+
+
+
+            //  do square_coord_gen funtion again but row by row now, - is this the only way to do it?
+
+            while (cor_y <= square_size) //this is incorrect in the first place, but also something is happening at the string generation phase - need to reset x value dum dum
             {
                 while (cor_x <= square_size)
                 {
-                    value = square_cors.TryGetValue(cor_x + cor_y); //get value based on key
-                    mssg_index = encode_path.GetIndexOf(value); //get index based on that value
-                    enc_message.Insert(mss_index, message[mssg_index]; //  SANITY CHECK HERE - DOES THIS MAKE SENSE?
+                    key_gen = String.Format("{0},{1}", cor_x, cor_y);
+                    value = square_cors[key_gen]; //get value based on key
+                    mssg_index = encode_path.IndexOf(value); 
+                    //determine if its in message, if not put a space there -- this part is incorrect, inserting sequentially unintentionally
+                    if(mssg_index > message.Length-1)
+                    {
+                       enc_message.Add( ' ');
 
+                    }
+                    else 
+                    {
+                        enc_message.Add(message[mssg_index]); //  SANITY CHECK HERE - DOES THIS MAKE SENSE?
+                    }
+                    
+                    cor_x++;
 
 
 
 
                 }
+                cor_x = 1;
+                cor_y++;
 
             }
 
@@ -43,7 +72,7 @@ namespace EncrypTion_Project
 
 
 
-
+            string final_message = String.Join("", enc_message.ToArray());
 
 
 
@@ -55,10 +84,10 @@ namespace EncrypTion_Project
         }
 
 
-        public Dictionary<int, int> square_coord_gen(int square_size)
+        public Dictionary<string, int> square_coord_gen(int square_size) // edited this - chagne back to <int,int>
         {
             //I can store these values as ID's
-            Dictionary<int, int> square_coordinate = new Dictionary<int, int>();
+            Dictionary<string, int> square_coordinate = new Dictionary<string, int>();
             int square_value = 1;
             int square_corx = 1;
             int square_cory = 1;
@@ -68,10 +97,11 @@ namespace EncrypTion_Project
             int max_y = square_size;
             int min_x = 1;
             int min_y = 1;
-            int key = 1;
+            //int key = 1;
+            string key;
 
             //troubleshooting variables
-            int trg = 0;
+          
 
                 while (square_value <= edge && square_value<=(square_size*square_size))
                 {
@@ -79,7 +109,7 @@ namespace EncrypTion_Project
                 /*Workaround to get final values - first block for 4x4 and up, why doesnt work for 2x2, 3x3? I dont think the value gets hit at the right point?*/
                 if (square_value == (square_size * square_size))
                 {
-                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    key = string.Format("{0},{1}", square_corx, square_cory);
                     square_coordinate.Add(key, square_value);
                     break;
 
@@ -88,7 +118,7 @@ namespace EncrypTion_Project
                 while (square_corx < max_x)   //x coordinates
                 {
                     //add stuff to the list
-                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    key = string.Format("{0},{1}", square_corx, square_cory);
                     square_coordinate.Add(key, square_value);
 
                     //prep next rotation
@@ -98,7 +128,7 @@ namespace EncrypTion_Project
                 }
                 while (square_cory < max_y)
                 {
-                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    key = string.Format("{0},{1}", square_corx, square_cory);
                     square_coordinate.Add(key, square_value);
 
                     //prep next rotation
@@ -109,7 +139,7 @@ namespace EncrypTion_Project
                 while (square_corx > min_x)
                 {
                     //add stuff to the list
-                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    key = string.Format("{0},{1}", square_corx, square_cory);
                     square_coordinate.Add(key, square_value);
 
                     //prep next rotation
@@ -120,7 +150,7 @@ namespace EncrypTion_Project
 
                 while (square_cory > (min_y+1)) 
                 {
-                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    key = string.Format("{0},{1}", square_corx, square_cory);
                     square_coordinate.Add(key, square_value);
 
                     //prep next rotation
@@ -132,7 +162,7 @@ namespace EncrypTion_Project
                 //going to cheat here and add functionality for 2x2, 3x3 squares. Will fix later!
                 if (square_size==2 && square_value==4 || square_size == 3 && square_value == 9)
                 {
-                    key = Convert.ToInt32(string.Format("{0}{1}", square_corx, square_cory));
+                    key = string.Format("{0},{1}", square_corx, square_cory);
                     square_coordinate.Add(key, square_value);
 
                 }
@@ -148,7 +178,7 @@ namespace EncrypTion_Project
                 max_x--;
                 min_y++;
                 max_y--;
-                trg++;
+                
                 }
 
 
@@ -169,12 +199,13 @@ namespace EncrypTion_Project
         {
             List<int> path = new List<int>();
             List<char> enc_mess = new List<char>();
-            Dictionary<int, int> square_coords = new Dictionary<int, int>();
-            string encoded_message;
+            Dictionary<string, int> square_coords = new Dictionary<string, int>();
+            string final_message;
             double square_size = 0;
-            int msg_index = 1;
 
-            if(message.Length % 2 != 0)
+            //Load up values for encoder method
+
+            if (message.Length % 2 != 0) //get square size
             {   
                 square_size = Math.Ceiling(Math.Sqrt((message.Length + 1)));
 
@@ -184,17 +215,19 @@ namespace EncrypTion_Project
                 square_size = Math.Ceiling(Math.Sqrt(message.Length));
 
             }
-
-            path = encoder((int)square_size);
+           
+            path = encoder((int)square_size);  //get path
             square_coords = square_coord_gen((int)square_size);
+            final_message = encoded_message(square_coords, path, (int)square_size, message);
 
-            
-            
 
-            
-            
-            encoded_message = String.Join("", enc_mess);
-            return encoded_message;
+
+
+
+
+
+            //final_message = String.Join("", enc_mess);
+            return final_message;
         }
 
         public List<int> encoder(int square_size) 
@@ -242,13 +275,11 @@ namespace EncrypTion_Project
     {
         static void Main(string[] args)
         {
-            Dictionary<int, int> test_cor = new Dictionary<int, int>();
-            List<int> test_encode_path = new List<int>();
+            String message = "Nig";
             Encoder encoder_steve = new Encoder();
-
-           // test_encode_path = encoder_steve.encoder(10);
-            test_cor = encoder_steve.square_coord_gen(10);
-            Console.WriteLine(test_encode_path);
+            String print_message = encoder_steve.encode_string(message);
+            
+            Console.WriteLine(print_message);
             Console.ReadLine();
 
 
