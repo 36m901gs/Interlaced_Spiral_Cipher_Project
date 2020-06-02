@@ -12,7 +12,7 @@ namespace EncrypTion_Project
             string decoded_message = "hush";
 
             //process
-            // 1. get size of square based on encoded message size
+            // 1. get size of square based on encoded message size, use that in assistance methods
             // 2. I feel like if I can reverse that process I use below, I can do this fairly easily which means:
             // 3. Use the encoded message to get the current index of the letter 
 
@@ -24,7 +24,7 @@ namespace EncrypTion_Project
         }
 
 
-        public string encoded_message(Dictionary<string, int> square_cors, List<int> encode_path, int square_size, string message)
+        public static string encoded_message(Dictionary<string, int> square_cors, List<int> encode_path, int square_size, string message)
         {
             List<char> enc_message = new List<char>(); //think I have to predetermine size of list to make this work
            // char[] string_att_2 = new char[square_size * square_size];   
@@ -84,7 +84,7 @@ namespace EncrypTion_Project
         }
 
 
-        public Dictionary<string, int> square_coord_gen(int square_size) // edited this - chagne back to <int,int>
+        public static Dictionary<string, int> square_coord_gen(int square_size) // edited this - chagne back to <int,int>
         {
             //I can store these values as ID's
             Dictionary<string, int> square_coordinate = new Dictionary<string, int>();
@@ -195,7 +195,7 @@ namespace EncrypTion_Project
 
         }
 
-        public string encode_string(string message)
+        public static string encode_string(string message)
         {
             List<int> path = new List<int>();
             List<char> enc_mess = new List<char>();
@@ -230,7 +230,7 @@ namespace EncrypTion_Project
             return final_message;
         }
 
-        public List<int> encoder(int square_size) 
+        public static List<int> encoder(int square_size) 
         {
             // int square_val = 0;
             int rim_modifier = ((square_size) - 1);
@@ -275,9 +275,9 @@ namespace EncrypTion_Project
     {
         static void Main(string[] args)
         {
-            String message = "Nig";
-            Encoder encoder_steve = new Encoder();
-            String print_message = encoder_steve.encode_string(message);
+            String message = "Romani_ite_domum";
+           // Encoder encoder_steve = new Encoder();
+            String print_message = Encoder.encode_string(message);
             
             Console.WriteLine(print_message);
             Console.ReadLine();
