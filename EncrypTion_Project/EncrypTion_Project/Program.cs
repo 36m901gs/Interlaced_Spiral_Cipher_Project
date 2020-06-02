@@ -7,19 +7,79 @@ namespace EncrypTion_Project
 {
     class Encoder
     {
-        public string decoder(string message)
+        public static string Decode(string message)
         {
-            string decoded_message = "hush";
+            //dont think I need square coordinates here
 
-            //process
-            // 1. get size of square based on encoded message size, use that in assistance methods
-            // 2. I feel like if I can reverse that process I use below, I can do this fairly easily which means:
-            // 3. Use the encoded message to get the current index of the letter 
+            List<int> encode_path = new List<int>();
+            List<char> enc_mess = new List<char>();
+            
+            Dictionary<string, int> square_cors = new Dictionary<string, int>();
+            string final_message;
+            double square_size = 0;
+            int cor_x = 1;
+            int cor_y = 1;
+            string key_gen;
+            int char_index = 0;
+
+            int value;
+            int mssg_index;
+
+            //Load up values for encoder method
+
+            if (message.Length % 2 != 0) //get square size
+            {
+                square_size = Math.Ceiling(Math.Sqrt((message.Length + 1)));
+
+            }
+            else
+            {
+                square_size = Math.Ceiling(Math.Sqrt(message.Length));
+
+            }
+            char[] decoded = new char[(int)(square_size * square_size)];
+
+            encode_path = encoder((int)square_size);  //get path
+            square_cors = square_coord_gen((int)square_size);
+
+            while (cor_y <= square_size) //this is incorrect in the first place, but also something is happening at the string generation phase - need to reset x value dum dum
+            {
+                while (cor_x <= square_size)
+                {
+                    key_gen = String.Format("{0},{1}", cor_x, cor_y);
+                    value = square_cors[key_gen]; //get value based on key
+                    mssg_index = encode_path.IndexOf(value);
+                    //determine if its in message, if not put a space there -- this part is incorrect, inserting sequentially unintentionally
+                    if (mssg_index > message.Length - 1)
+                    {
+                        decoded[mssg_index] = ' ';
+
+                    }
+                    else
+                    {
+                        decoded[mssg_index] = message[char_index]; //  SANITY CHECK HERE - DOES THIS MAKE SENSE?
+                        char_index++;
+                    }
+
+                    cor_x++;
+                   
 
 
 
 
-            return decoded_message;
+                }
+                cor_x = 1;
+                cor_y++;
+                
+
+            }
+
+
+            final_message = new string(decoded);
+
+
+
+            return final_message;
 
         }
 
@@ -49,7 +109,7 @@ namespace EncrypTion_Project
                     //determine if its in message, if not put a space there -- this part is incorrect, inserting sequentially unintentionally
                     if(mssg_index > message.Length-1)
                     {
-                       enc_message.Add( ' ');
+                       enc_message.Add(' ');
 
                     }
                     else 
@@ -275,11 +335,13 @@ namespace EncrypTion_Project
     {
         static void Main(string[] args)
         {
-            String message = "Romani_ite_domum";
+            String message = "Romani ite domum";
            // Encoder encoder_steve = new Encoder();
             String print_message = Encoder.encode_string(message);
+            String print_dec_mess = Encoder.Decode(print_message);
             
             Console.WriteLine(print_message);
+            Console.WriteLine(print_dec_mess);
             Console.ReadLine();
 
 
