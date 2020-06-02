@@ -25,18 +25,8 @@ namespace EncrypTion_Project
             int value;
             int mssg_index;
 
-            //Load up values for encoder method
-
-            if (message.Length % 2 != 0) //get square size
-            {
-                square_size = Math.Ceiling(Math.Sqrt((message.Length + 1)));
-
-            }
-            else
-            {
-                square_size = Math.Ceiling(Math.Sqrt(message.Length));
-
-            }
+          
+            square_size = Math.Ceiling(Math.Sqrt(message.Length));
             char[] decoded = new char[(int)(square_size * square_size)];
 
             encode_path = encoder((int)square_size);  //get path
@@ -47,8 +37,8 @@ namespace EncrypTion_Project
                 while (cor_x <= square_size)
                 {
                     key_gen = String.Format("{0},{1}", cor_x, cor_y);
-                    value = square_cors[key_gen]; //get value based on key
-                    mssg_index = encode_path.IndexOf(value);
+                    value = square_cors[key_gen]; //the spot on the grid that we are adding to the final string
+                    mssg_index = encode_path.IndexOf(value); //determines where we will place the next value
                     //determine if its in message, if not put a space there -- this part is incorrect, inserting sequentially unintentionally
                     if (mssg_index > message.Length - 1)
                     {
@@ -57,12 +47,13 @@ namespace EncrypTion_Project
                     }
                     else
                     {
-                        decoded[mssg_index] = message[char_index]; //  SANITY CHECK HERE - DOES THIS MAKE SENSE?
-                        char_index++;
+                        decoded[mssg_index] = message[char_index]; //  SANITY CHECK
+                        
                     }
 
                     cor_x++;
-                   
+                    char_index++;
+
 
 
 
@@ -75,7 +66,12 @@ namespace EncrypTion_Project
             }
 
 
-            final_message = new string(decoded);
+            final_message = String.Join("", decoded);
+            while (final_message[final_message.Length - 1] == ' ')
+            {
+                final_message = final_message.Substring(0,final_message.Length - 1);
+
+            }
 
 
 
@@ -265,16 +261,9 @@ namespace EncrypTion_Project
 
             //Load up values for encoder method
 
-            if (message.Length % 2 != 0) //get square size
-            {   
-                square_size = Math.Ceiling(Math.Sqrt((message.Length + 1)));
+            square_size = Math.Ceiling(Math.Sqrt((message.Length)));
 
-            }
-            else
-            {
-                square_size = Math.Ceiling(Math.Sqrt(message.Length));
-
-            }
+            
            
             path = encoder((int)square_size);  //get path
             square_coords = square_coord_gen((int)square_size);
@@ -335,7 +324,7 @@ namespace EncrypTion_Project
     {
         static void Main(string[] args)
         {
-            String message = "Romani ite domum";
+            String message = "ux,*=XjUO,ZfmE,%@_kv&Arn+";//,"I cehsts  dtdt ioselerfa  lesI'amder dhngy aatsosi taovno w wni 'g nrun mImmt eoa";
            // Encoder encoder_steve = new Encoder();
             String print_message = Encoder.encode_string(message);
             String print_dec_mess = Encoder.Decode(print_message);
