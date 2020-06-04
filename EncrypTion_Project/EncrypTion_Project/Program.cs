@@ -9,24 +9,21 @@ namespace EncrypTion_Project
     {
         public static string Decode(string message)
         {
-            //dont think I need square coordinates here
+            
 
             List<int> encode_path = new List<int>();
             List<char> enc_mess = new List<char>();
             
             Dictionary<string, int> square_cors = new Dictionary<string, int>();
             string final_message;
-            double square_size = 0;
+            double square_size = Math.Ceiling(Math.Sqrt(message.Length)); ;
             int cor_x = 1;
             int cor_y = 1;
-            string key_gen;
             int char_index = 0;
-
-            int value;
             int mssg_index;
 
           
-            square_size = Math.Ceiling(Math.Sqrt(message.Length));
+           
             char[] decoded = new char[(int)(square_size * square_size)];
 
             encode_path = encoder((int)square_size);  //get path
@@ -36,10 +33,9 @@ namespace EncrypTion_Project
             {
                 while (cor_x <= square_size)
                 {
-                    key_gen = String.Format("{0},{1}", cor_x, cor_y);
-                    value = square_cors[key_gen]; //the spot on the grid that we are adding to the final string
-                    mssg_index = encode_path.IndexOf(value); //determines where we will place the next value
-                    //determine if its in message, if not put a space there -- this part is incorrect, inserting sequentially unintentionally
+                     
+                    mssg_index = encode_path.IndexOf(square_cors[String.Format("{0},{1}", cor_x, cor_y)]); //determines where we will place the next value
+
                     if (mssg_index > message.Length - 1)
                     {
                         decoded[mssg_index] = ' ';
@@ -53,10 +49,6 @@ namespace EncrypTion_Project
 
                     cor_x++;
                     char_index++;
-
-
-
-
 
                 }
                 cor_x = 1;
@@ -82,27 +74,20 @@ namespace EncrypTion_Project
 
         public static string encoded_message(Dictionary<string, int> square_cors, List<int> encode_path, int square_size, string message)
         {
-            List<char> enc_message = new List<char>(); //think I have to predetermine size of list to make this work
-           // char[] string_att_2 = new char[square_size * square_size];   
+            List<char> enc_message = new List<char>();   
             int cor_x = 1;
             int cor_y = 1;
-            string key_gen;
-
-            int value;
             int mssg_index;
 
 
 
-            //  do square_coord_gen funtion again but row by row now, - is this the only way to do it?
-
-            while (cor_y <= square_size) //this is incorrect in the first place, but also something is happening at the string generation phase - need to reset x value dum dum
+            while (cor_y <= square_size) 
             {
                 while (cor_x <= square_size)
                 {
-                    key_gen = String.Format("{0},{1}", cor_x, cor_y);
-                    value = square_cors[key_gen]; //get value based on key
-                    mssg_index = encode_path.IndexOf(value); 
-                    //determine if its in message, if not put a space there -- this part is incorrect, inserting sequentially unintentionally
+                     
+                    mssg_index = encode_path.IndexOf(square_cors[String.Format("{0},{1}", cor_x, cor_y)]); 
+                    
                     if(mssg_index > message.Length-1)
                     {
                        enc_message.Add(' ');
@@ -110,29 +95,17 @@ namespace EncrypTion_Project
                     }
                     else 
                     {
-                        enc_message.Add(message[mssg_index]); //  SANITY CHECK HERE - DOES THIS MAKE SENSE?
+                        enc_message.Add(message[mssg_index]); 
                     }
                     
                     cor_x++;
-
-
-
-
                 }
                 cor_x = 1;
                 cor_y++;
 
             }
 
-
-
-
-
-            string final_message = String.Join("", enc_message.ToArray());
-
-
-
-            return final_message;
+            return String.Join("", enc_message.ToArray());
 
 
 
@@ -140,7 +113,7 @@ namespace EncrypTion_Project
         }
 
 
-        public static Dictionary<string, int> square_coord_gen(int square_size) // edited this - chagne back to <int,int>
+        public static Dictionary<string, int> square_coord_gen(int square_size) 
         {
             //I can store these values as ID's
             Dictionary<string, int> square_coordinate = new Dictionary<string, int>();
@@ -148,16 +121,11 @@ namespace EncrypTion_Project
             int square_corx = 1;
             int square_cory = 1;
             int edge = ((square_size - 1) * 4);
-            //currently bruteforcing - make this more elegant after you find a solution, think I can do away with these ni the looping phase
             int max_x = square_size;
             int max_y = square_size;
             int min_x = 1;
             int min_y = 1;
-            //int key = 1;
             string key;
-
-            //troubleshooting variables
-          
 
                 while (square_value <= edge && square_value<=(square_size*square_size))
                 {
@@ -223,12 +191,6 @@ namespace EncrypTion_Project
 
                 }
                 
-
-                //update values for next set of edges and min/maxes
-
-
-
-
                 edge += (edge - 8);
                 min_x++;
                 max_x--;
@@ -237,17 +199,8 @@ namespace EncrypTion_Project
                 
                 }
 
-
-
-
-
-
-
-            
+     
             return square_coordinate;
-
-
-
 
         }
 
@@ -257,14 +210,7 @@ namespace EncrypTion_Project
             List<char> enc_mess = new List<char>();
             Dictionary<string, int> square_coords = new Dictionary<string, int>();
             string final_message;
-            double square_size = 0;
-
-            //Load up values for encoder method
-
-            square_size = Math.Ceiling(Math.Sqrt((message.Length)));
-
-            
-           
+            double square_size  = Math.Ceiling(Math.Sqrt((message.Length)));
             path = encoder((int)square_size);  //get path
             square_coords = square_coord_gen((int)square_size);
             final_message = encoded_message(square_coords, path, (int)square_size, message);
@@ -272,16 +218,11 @@ namespace EncrypTion_Project
 
 
 
-
-
-
-            //final_message = String.Join("", enc_mess);
             return final_message;
         }
 
         public static List<int> encoder(int square_size) 
         {
-            // int square_val = 0;
             int rim_modifier = ((square_size) - 1);
             int inc_modifier = ((square_size - 1));
             int block_init = 1;
@@ -293,13 +234,13 @@ namespace EncrypTion_Project
 
             while  (rim >= 4) { 
 
-                for (int i = block_init; i <= rim_modifier /*?*/; i++) 
+                for (int i = block_init; i <= rim_modifier; i++) 
                 {
                     encode_map.Add(i);
 
                     for (int j = 1; j <= 3; j++)
                     {
-                        encode_map.Add(i + (j * (inc_modifier))); /*set a breakpoint when the value added is 40 then step through*/
+                        encode_map.Add(i + (j * (inc_modifier))); 
                     }
 
                 }
@@ -324,27 +265,13 @@ namespace EncrypTion_Project
     {
         static void Main(string[] args)
         {
-            String message = "ux,*=XjUO,ZfmE,%@_kv&Arn+";//,"I cehsts  dtdt ioselerfa  lesI'amder dhngy aatsosi taovno w wni 'g nrun mImmt eoa";
-           // Encoder encoder_steve = new Encoder();
+            String message = "ux,*=XjUO,ZfmE,%@_kv&Arn+";
             String print_message = Encoder.encode_string(message);
             String print_dec_mess = Encoder.Decode(print_message);
             
             Console.WriteLine(print_message);
             Console.WriteLine(print_dec_mess);
             Console.ReadLine();
-
-
-
-
-
-            /* Answer Section
-            string message = "Romani_ite_domum";
-            string encoded_message = encoder_steve.encode_string(message);
-            Console.WriteLine(encoded_message);
-            Console.ReadLine();  */
-
-
-
 
             
         }
